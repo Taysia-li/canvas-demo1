@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>画板</title>
+    <link rel="stylesheet" href="canvas-demo1.css">
+</head>
+
+<body>
+    <div id="canvas"></div>
+    <script>
+        /*  鼠标点击出现圆点 * /
+        canvas.onclick = (e) => {
+            /*  获取e，查看有什么
+            console.log(e)
+             */
+
+        /*  获取鼠标点击位置的坐标* /
+        console.log(e.clientX)
+        console.log(e.clientY)
+
+        /*  创建一个div，让文档创建一个div  * /
+        let div = document.createElement('div')
+        div.style.position = 'absolute'
+        div.style.left = e.clientX + 'px'
+        div.style.top = e.clientY + 'px'
+        div.style.width = '6px'
+        div.style.height = '6px'
+
+        /*  调整div在鼠标的位置，显示在中间  * /
+        div.style.marginLeft = '-3px'
+        div.style.marginTop = '-3px'
+
+        /*  调整div变成圆形  * /
+        div.style.borderRadius = '50%'
+        div.style.backgroundColor = 'black'
+        /*  把div放到页面  * /
+        canvas.appendChild(div)
+    }
+    */
+
+        /*  实现用户滑动鼠标画线,只要移动就画，性能低   */
+        canvas.onmousemove = (e) => {
+            /*  获取鼠标点击位置的坐标*/
+            console.log(e.clientX)
+            console.log(e.clientY)
+
+            /*  创建一个div，让文档创建一个div  */
+            let div = document.createElement('div')
+            div.style.position = 'absolute'
+            div.style.left = e.clientX + 'px'
+            div.style.top = e.clientY + 'px'
+            div.style.width = '6px'
+            div.style.height = '6px'
+
+            /*  调整div在鼠标的位置，显示在中间  */
+            div.style.marginLeft = '-3px'
+            div.style.marginTop = '-3px'
+
+            /*  调整div变成圆形  */
+            div.style.borderRadius = '50%'
+            div.style.backgroundColor = 'black'
+            /*  把div放到页面  */
+            canvas.appendChild(div)
+        }
+    </script>
+</body>
+
+</html>

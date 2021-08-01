@@ -1,0 +1,11 @@
+*{
+    margin:0;
+    padding:0;
+    box-sizing: border-box;
+}
+
+#canvas{
+    /*   100vh 和屏幕一样高   */
+    height:100vh;
+    border:1px solid red;
+}
