@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Canvas画板--画点</title>
+
+    <link rel="stylesheet" href="canvas-dot.css">
+</head>
+
+<body>
+    <!--  canvas默认是inline元素  -->
+    <!--  在这里设置canvas高度之后，就默认这个高度，在CSS 重置宽度时，会使得图像拉伸，变得模糊-->
+    <!--  解决：一开始就获取屏幕宽度和高度  -->
+    <canvas id="canvas" width="100" height="100"></canvas>
+
+    <script>
+        //  画线  
+        var canvas = document.getElementById("canvas");
+        /*  获取屏幕高度宽度
+        console.log(document.body.clientWidth)
+        */
+        //  获取文档的高度
+        canvas.width = document.documentElement.clientWidth;
+        canvas.height = document.documentElement.clientHeight;
+        var ctx = canvas.getContext("2d");
+
+        //  填充颜色样式
+        // ctx.fillStyle = "rgb(200,0,0)";
+
+        //  填充成矩形
+        // fillRect(x,y,width,height)
+        // ctx.fillRect(20, 20, 50, 60);
+
+        /*  点击屏幕获取点的位置
+        canvas.onclick = (e) => {
+            console.log(e.clientX);
+            console.log(e.clientY);
+            ctx.fillRect(e.clientX - 5, clientY - 5, 10, 10);
+
+        }
+        */
+        ctx.fillStyle = "black";
+        ctx.strokeStyle = 'none';
+
+        //  设置停止绘画标志
+        let painting = false;
+
+
+        //  判断是否支持鼠标或触屏(手机显示为true ，电脑显示为false)
+        var isTouchDevice = 'ontouchstart' in document.documentElement;
+        console.log(isTouchDevice)
+        if (isTouchDevice) {
+            //  触屏时的操作
+            canvas.ontouchmove = (e) => {
+                //  用console.log(e)查看它里面有什么内容
+                let x = e.touches[0].clientX;
+                let y = e.touches[0].clientY;
+                ctx.beginPath();
+                ctx.arc(x, y, 2, 0, 2 * Math.PI);
+                ctx.stroke();  //  笔画
+                ctx.fill();   //  填充内容
+            }
+        }
+        else   //  如果是鼠标设备
+        {
+            //  移动鼠标开始画线,使用canvas可以提高性能
+            //  点击鼠标时开始绘画
+            canvas.onmousedown = () => {
+                painting = true;
+            }
+            //  移动鼠标时判断painting
+            canvas.onmousemove = (e) => {
+                if (painting === true) {
+                    ctx.beginPath();
+                    //  arc(x坐标，坐标，半径，圆弧长度--0表示整个圆)
+                    ctx.arc(e.clientX, e.clientY, 2, 0, 2 * Math.PI);
+                    ctx.stroke();  //  笔画
+                    ctx.fill();   //  填充内容
+                }
+                else {
+                    console.log('什么都不做')
+                }
+            }
+
+            //  松开鼠标时，painting==false
+            canvas.onmouseup = () => {
+                painting = false;
+            }
+
+        }
+
+    </script>
+</body>
+
+</html>
