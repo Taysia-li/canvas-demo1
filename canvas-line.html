@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>canvas画板--画线</title>
+
+    <link rel="stylesheet" href="canvas-line.css">
+</head>
+
+<body>
+    <canvas id="canvas"></canvas>
+    <script>
+        let canvas = document.getElementById("canvas");
+        canvas.width = document.documentElement.clientWidth;
+        canvas.height = document.documentElement.clientHeight;
+        let ctx = canvas.getContext("2d");
+        ctx.fillStyle = "black";
+        ctx.strokeStyle = "none";
+        ctx.lineWidth = 5;  //  当线的宽度过宽时，线的衔接有空隙
+        ctx.lineCap = "round";  //  修改线的衔接方式
+
+        /*
+            //  绘制描边三角形
+            ctx.beginPath();
+            //  端点
+            ctx.moveTo(125, 125);
+            //  从端点到另一个点
+            ctx.lineTo(125, 45);
+            ctx.lineTo(45, 125);
+            ctx.closePath();
+            ctx.stroke();   //  描边
+        */
+        //  画线,写成一个函数
+        function drawline(x1, y1, x2, y2) {
+            ctx.beginPath();
+            ctx.moveTo(x1, y1);
+            ctx.lineTo(x2, y2);
+            ctx.stroke();
+        }
+
+        let painting = false;
+
+        let last;    // 记住上次的点的位置
+
+        var isTouchDevice = 'ontouchstart' in document.documentElement;
+        //  触摸
+        if (isTouchDevice) {
+            //  在触摸开始时获取初始位置
+            canvas.ontouchstart = (e) => {
+                let x = e.touches[0].clientX;
+                let y = e.touches[0].clientY;
+                last = [x, y];
+            }
+            //  手指移动时画线
+            canvas.ontouchmove = (e) => {
+                let x = e.touches[0].clientX;
+                let y = e.touches[0].clientY;
+                ctx.beginPath();
+                drawline(last[0], last[1], x, y)
+                last = [x, y];    //  更新上一次点的位置
+            }
+        }
+        //  使用鼠标时
+        else {
+            canvas.onmousedown = (e) => {
+                painting = true;
+                last = [e.clientX, e.clientY];
+            }
+
+            canvas.onmousemove = (e) => {
+                if (painting === true) {
+                    drawline(last[0], last[1], e.clientX, e.clientY);
+                    last = [e.clientX, e.clientY];  //  更新上次点的坐标
+                }
+            }
+
+            canvas.onmouseup = () => {
+                painting = false;
+            }
+        }
+    </script>
+</body>
+
+</html>
